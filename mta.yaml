@@ -1,0 +1,92 @@
+_schema-version: "3.2"
+ID: myui5app
+version: 0.0.1
+modules:
+- name: myui5app-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: myui5app-destination-service
+    parameters:
+      content-target: true
+  - name: myui5app_html_repo_host
+    parameters:
+      service-key:
+        name: myui5app_html_repo_host-key
+  - name: uaa_myui5app
+    parameters:
+      service-key:
+        name: uaa_myui5app-key
+  parameters:
+    content:
+      subaccount:
+        destinations:
+        - Name: managed_myui5app_html_repo_host
+          ServiceInstanceName: myui5app-html5-app-host-service
+          ServiceKeyName: myui5app_html_repo_host-key
+          sap.cloud.service: managed
+        - Authentication: OAuth2UserTokenExchange
+          Name: managed_uaa_myui5app
+          ServiceInstanceName: myui5app-xsuaa-service
+          ServiceKeyName: uaa_myui5app-key
+          sap.cloud.service: managed
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: myui5app-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: myui5app_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - commyuiappmyappui.zip
+      name: commyuiappmyappui
+      target-path: resources/
+- name: commyuiappmyappui
+  type: html5
+  path: myapp_ui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: myui5app-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: myui5app-destination-service
+    service-plan: lite
+- name: myui5app_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: myui5app-html5-app-host-service
+    service-plan: app-host
+- name: uaa_myui5app
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: myui5app-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

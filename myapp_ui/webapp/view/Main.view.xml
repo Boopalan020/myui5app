@@ -1,0 +1,40 @@
+<mvc:View controllerName="com.my.uiapp.myappui.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:code="sap.ui.codeeditor"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Panel id="_IDGenPanel1" width="auto" class="sapUiResponsiveMargin" accessibleRole="Region">
+                <headerToolbar>
+                    <OverflowToolbar id="_IDGenOverflowToolbar1">
+                        <Title id="_IDGenTitle1" text="Role-Based Buttons"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <l:VerticalLayout id="_IDGenVerticalLayout1" class="sapUiContentPadding">
+                        <Button id="_IDGenButton1" text="Get Data - Admin Access" press=".on_GetData_Admin" enabled="true" ></Button>
+                        <Button id="_IDGenButton2" text="Get Data - Customer Access" press=".on_GetData_Customer" enabled="true" ></Button>
+                    </l:VerticalLayout>
+                </content>
+            </Panel>
+
+            <Panel id="_IDGenPanel2" width="auto" class="sapUiResponsiveMargin" visible="false" >
+                <headerToolbar>
+                    <OverflowToolbar id="_IDGenOverflowToolbar2">
+                        <Title id="_IDGenTitle2" text="Response from CAP Service as JSON"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <code:CodeEditor id="_IDGenCodeEditor1"
+                        maxLines="50"
+                        width="1250px"
+                        type="json"
+                        colorTheme="cobalt"
+                        editable="false"
+                        visible="true" />
+                </content>
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>

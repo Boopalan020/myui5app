@@ -1,0 +1,45 @@
+{
+  "xsappname": "xsmyui5app",
+  "tenant-mode": "dedicated",
+  "authorities":["$XSAPPNAME(application,xsToApp_provider).ToApp_providerscope"], 
+  "description": "Security profile of called application",
+  "scopes": [
+    {
+      "name": "uaa.user",
+      "description": "UAA"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin"
+    },
+    {
+      "name": "$XSAPPNAME.Customer",
+      "description": "Customer"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": [
+        "uaa.user"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Customer",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Customer"
+      ],
+      "attribute-references": []
+    }
+  ]
+}
